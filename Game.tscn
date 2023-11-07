@@ -1,0 +1,140 @@
+[gd_scene load_steps=10 format=3 uid="uid://2tg1o5qpb3pu"]
+
+[ext_resource type="Script" path="res://Game.cs" id="1_4px53"]
+[ext_resource type="Texture2D" uid="uid://dv1ih3xuruijj" path="res://Assets/Textures/arena.png" id="1_jahxv"]
+[ext_resource type="PackedScene" uid="uid://344xaqcmuna1" path="res://Paddle.tscn" id="2_5al4m"]
+[ext_resource type="LabelSettings" uid="uid://d3hd5swa1dgww" path="res://ScoreLabelSettings.tres" id="2_fcdsi"]
+[ext_resource type="PackedScene" uid="uid://44s2bcbd1e5d" path="res://Goal.tscn" id="3_s75me"]
+[ext_resource type="FontFile" uid="uid://nwvid6kvcdlj" path="res://Assets/Font/Kenney Thick.ttf" id="4_7koom"]
+[ext_resource type="PackedScene" uid="uid://c44m4i2snug3o" path="res://Ball.tscn" id="5_rwo6v"]
+[ext_resource type="PackedScene" uid="uid://ds8y0bixwfq6y" path="res://Wall.tscn" id="6_b4cjr"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_sqmqj"]
+line_spacing = 0.0
+font = ExtResource("4_7koom")
+font_size = 10
+
+[node name="Game" type="Node" node_paths=PackedStringArray("_startGameOverlay", "_gameOverScreen", "Ball", "_leftPaddle", "_rightPaddle", "_leftGoal", "_rightGoal", "_leftScoreLabel", "_rightScoreLabel")]
+script = ExtResource("1_4px53")
+_startGameOverlay = NodePath("StartGameOverlay")
+_gameOverScreen = NodePath("WinLoseScreen")
+Ball = NodePath("Ball")
+_leftPaddle = NodePath("Left Paddle")
+_rightPaddle = NodePath("Right Paddle")
+_leftGoal = NodePath("Left Goal")
+_rightGoal = NodePath("Right Goal")
+_leftScoreLabel = NodePath("GameUI/HBoxContainer/Left Score")
+_rightScoreLabel = NodePath("GameUI/HBoxContainer/Right Score")
+
+[node name="StartGameOverlay" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="TextureRect" type="ColorRect" parent="StartGameOverlay"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.705882)
+
+[node name="CenterContainer" type="CenterContainer" parent="StartGameOverlay"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="StartButton" type="Button" parent="StartGameOverlay/CenterContainer"]
+layout_mode = 2
+text = "START"
+flat = true
+
+[node name="WinLoseScreen" type="CanvasLayer" parent="."]
+
+[node name="CenterContainer" type="CenterContainer" parent="WinLoseScreen"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="WinLoseScreen/CenterContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="WinLoseScreen/CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "GAME OVER"
+label_settings = ExtResource("2_fcdsi")
+
+[node name="RestartButton" type="Button" parent="WinLoseScreen/CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "RESTART"
+
+[node name="GameUI" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="Background" type="TextureRect" parent="GameUI"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_jahxv")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="GameUI"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -200.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Left Score" type="Label" parent="GameUI/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "99"
+label_settings = ExtResource("2_fcdsi")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label" type="Label" parent="GameUI/HBoxContainer"]
+layout_mode = 2
+text = "First
+To 5"
+label_settings = SubResource("LabelSettings_sqmqj")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Right Score" type="Label" parent="GameUI/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "99"
+label_settings = ExtResource("2_fcdsi")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Left Paddle" parent="." node_paths=PackedStringArray("_game") instance=ExtResource("2_5al4m")]
+position = Vector2(20, 137)
+_isPlayerControlled = true
+_game = NodePath("..")
+
+[node name="Left Goal" parent="." instance=ExtResource("3_s75me")]
+position = Vector2(11, 126)
+
+[node name="Right Paddle" parent="." node_paths=PackedStringArray("_game") instance=ExtResource("2_5al4m")]
+position = Vector2(300, 137)
+_game = NodePath("..")
+
+[node name="Right Goal" parent="." instance=ExtResource("3_s75me")]
+position = Vector2(322, 126)
+
+[node name="Ball" parent="." instance=ExtResource("5_rwo6v")]
+position = Vector2(160, 133)
+
+[node name="Top Wall" parent="." instance=ExtResource("6_b4cjr")]
+
+[node name="Bottom Wall" parent="." instance=ExtResource("6_b4cjr")]
+position = Vector2(160, 235)
+
+[connection signal="pressed" from="StartGameOverlay/CenterContainer/StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="pressed" from="WinLoseScreen/CenterContainer/VBoxContainer/RestartButton" to="." method="_on_restart_button_pressed"]

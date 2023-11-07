@@ -1,0 +1,9 @@
+[gd_resource type="LabelSettings" load_steps=2 format=3 uid="uid://d3hd5swa1dgww"]
+
+[ext_resource type="FontFile" uid="uid://nwvid6kvcdlj" path="res://Assets/Font/Kenney Thick.ttf" id="1_hjycx"]
+
+[resource]
+font = ExtResource("1_hjycx")
+font_color = Color(0.913725, 0.937255, 0.92549, 1)
+outline_size = 4
+outline_color = Color(0.333333, 0.333333, 0.407843, 1)
